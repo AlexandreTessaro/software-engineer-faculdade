@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projeto 05</title>
+    <link rel="stylesheet" href="stylep5.css">
+</head>
+<body>
+    <h2>Projeto 05</h2>
+    <p>No quinto projeto foi lançado outro desafio, e bem mais difícil, para controlar dois motores que anda 
+    para todos os lados no
+    tinkercad, e bem esse foi o resultado:</p>
+    <p>Componentes utilizados:</p>
+    <ol>
+        <li>Arduino Uno R3:</li>
+        <ul type="square">
+            <li>14 entradas e saídas digitais, no qual 6 pinos podem ser utilizados como saída PWM, 
+              que funciona como se adicionássemos intensidade no sinal. Dessa forma, ela pode ser utilizada, 
+              por exemplo, como volume, para regular a intensidade de brilho e muito mais.</li>
+        </ul>
+        <li>Placa de Ensaio Pequena:</li>
+        <ul type="square">
+            <li>É uma placa com furos e conexões condutoras 
+            ultilizada para a montagem de protótipos e projetos em estado inicial.</li>
+        </ul>
+        <li>Bateria 9V:</li>
+        <ul type="square">
+            <li>As baterias 9V proporcionam energia confiável aos aparelhos do dia a dia.</li>
+            </ul>
+       <li>Motor CC:</li>
+      <ul type="square">
+        
+            <li>São utilizados normalmente em acionamentos de máquinas operatrizes como por exemplo, 
+            ferramentas de avanço.</li>
+          </ul>
+          <li>Fotorresistor:</li>
+      <ul type="square">
+        
+            <li>É um componente eletrônico, sensível a luz, que tem por finalidade limitar a corrente 
+            elétrica que passa sobre ele, como um resistor comum, só que o grande diferencial é 
+            que ele é um resistor variável que interage com a luz.</li>
+          </ul>
+          <li>Interruptor Deslizante:</li>
+      <ul type="square">
+        
+            <li>São utilizados na abertura de redes, em tomadas e entradas de aparelhos eletrônicos, 
+              basicamente na maioria das situações que envolvem o ligamento ou desligamento de 
+              energia elétrica.</li>
+          </ul>
+          <li>Aciotor Ponte H:</li>
+          <ul type="square">
+            
+                <li>Uma Ponte H é um circuito especial que permite realizar a inversão da 
+                  direção (polaridade) da corrente que flui através de uma carga. É muito utilizada, 
+                  por exemplo, para controlar a direção de rotação de um motor DC.</li>
+              </ul>
+              <li>Resistores:</li>
+              <ul type="square">
+                
+                    <li>A presença de um resistor de maneira isolada em um circuito tem a 
+                      função de limitar a passagem de corrente.</li>
+                  </ul>
+                  <li>LED RGB:</li>
+                  <ul type="square">
+                    
+                        <li>emite luz por meio da passagem de corrente elétrica, mas ele apresenta a peculiaridade de ser
+                          composto por três LEDs de cores diferentes, 
+                          sendo elas: vermelho (Red), verde (Green) e azul (Blue), surgindo daí o nome “RGB”.</li>
+                      </ul>
+          
+          </ul>
+    <div>
+        <div style="float: left">
+        <img src="imagens/motor_que_anda_para_todos_os_lados.jpg" />
+        </div>
+            <div class="dropdown">
+            <span>Passe o mouse sobre mim para ver <br> o código usado</span>
+            <div class="dropdown-content">
+            <code>
+                <p>// C++ code<br>
+                //<br>
+                <br>
+                // MOTOR<br>
+                #define IN1 2<br>
+                #define IN2 4<br>
+                #define IN3 7<br>
+                #define IN4 5<br>
+                #define ENA 3<br>
+                #define ENB 6<br>
+                <br>
+                // LED RGB<br>
+                #define LEDR 9<br>
+                #define LEDB 10<br>
+                #define LEDG 11<br>
+                <br>
+                // SENSOR<br>
+                #define S1 A0<br>
+                #define S2 A1<br>
+                #define S3 A2<br>
+                #define S4 A3<br>
+                <br>
+                void setup()<br>
+                {<br>
+                  // MOTOR<br>
+                  pinMode(IN1,OUTPUT);<br>
+                  pinMode(IN2,OUTPUT);<br>
+                  pinMode(IN3,OUTPUT);<br>
+                  pinMode(IN4,OUTPUT);<br>
+                  pinMode(ENA,OUTPUT);<br>
+                  pinMode(ENB,OUTPUT);<br>
+                  analogWrite(ENA,255);<br>
+                  analogWrite(ENB,255);<br>
+                  <br>
+                  // LED RGB<br>
+                  pinMode(LEDR, OUTPUT);<br>
+                  pinMode(LEDB, OUTPUT);<br>
+                  pinMode(LEDG, OUTPUT);<br>
+                  <br>
+                  Serial.begin(9600);<br>
+                }<br>
+                <br>
+                void loop()<br>
+                {<br>
+                  // Leitura dos sensores<br>
+                  int s1, s2, s3, s4;<br>
+                  <br>
+                  s1=analogRead(S1);<br>
+                  s2=analogRead(S2);<br>
+                  s3=analogRead(S3);<br>
+                  s4=analogRead(S4);<br>
+                  <br>
+                  int luz = 500;<br>
+                  <br>
+                  Serial.print(s1);<br>
+                  Serial.print(" ");<br>
+                  Serial.print(s2);<br>
+                  Serial.print(" ");<br>
+                  Serial.print(s3);<br>
+                  Serial.print(" ");<br>
+                  Serial.print(s4);<br>
+                  Serial.print(" ");<br>
+                  <br>
+                  if(s1<luz && s2>luz && s3>luz && s4<luz){ <br>
+                    //frente<br>
+                    Serial.println(" Frente ");<br>
+                    <br>
+                    digitalWrite(LEDR, LOW);<br>
+                    digitalWrite(LEDG, HIGH);<br>
+                    digitalWrite(LEDB, LOW);<br>
+                    <br>
+                    digitalWrite(IN1,HIGH);<br>
+                    digitalWrite(IN2,LOW);<br>
+                    digitalWrite(IN3,LOW);<br>
+                    digitalWrite(IN4,HIGH);<br>
+                  }else if (s1>luz && s2<luz && s3<luz && s4<luz){ <br>
+                    // direita<br>
+                    Serial.println(" Direita ");<br>
+                    <br>
+                    digitalWrite(LEDR, HIGH);<br>
+                    digitalWrite(LEDG, LOW);<br>
+                    digitalWrite(LEDB, LOW);<br>
+                    <br>
+                    digitalWrite(IN1,LOW);<br>
+                    digitalWrite(IN2,HIGH);<br>
+                    digitalWrite(IN3,LOW);<br>
+                    digitalWrite(IN4,HIGH);<br>
+                  }else if (s1<luz && s2<luz && s3<luz && s4>luz){<br>
+                    // esquerda<br>
+                    Serial.println(" Esquerda ");<br>
+                    <br>
+                    digitalWrite(LEDR, HIGH);<br>
+                    digitalWrite(LEDG, LOW);<br>
+                    digitalWrite(LEDB, LOW);<br>
+                    <br>
+                    digitalWrite(IN1,HIGH);<br>
+                    digitalWrite(IN2,LOW);<br>
+                    digitalWrite(IN3,HIGH);<br>
+                    digitalWrite(IN4,LOW);<br>
+                  }else{<br>
+                    // desligado<br>
+                    Serial.println(" Parado ");<br>
+                    <br>
+                    digitalWrite(LEDR, LOW);<br>
+                    digitalWrite(LEDG, LOW);<br>
+                    digitalWrite(LEDB, HIGH);<br>
+                    <br>
+                    <br>
+                    digitalWrite(IN1,LOW);<br>
+                    digitalWrite(IN2,LOW);<br>
+                    digitalWrite(IN3,LOW);<br>
+                    digitalWrite(IN4,LOW);<br>
+                  }<br>
+                }<br>
+              </code>
+            </div>
+            <br>
+            <br></p>
+            </div>
+            </div>
+          <code>
+            
+          </code>
+        <div>
+        <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>   
+        <p>Se quiser ter todo acesso as informações do projeto é só clicar <a href="https://www.tinkercad.com/things/bsqpT0pAOcM" target="_blank">aqui</a>.</p> 
+        <h5>
+        <a href="index.html">
+            <img  class="direita" src="imagens/votlar preto.png" width="60px">
+        </a>
+        </h5>
+    
+</body>
+</html>

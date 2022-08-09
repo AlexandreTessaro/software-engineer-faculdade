@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="stylep6.css">
+    <title>Projeto 06</title>
+</head>
+<body>
+    <h2>Projeto 06</h2>
+    <p>No sexto projeto foi lançado o maior desafio, se não por alguns amigos da faculdade eu nem teria conseguido, tinhamos que fazer um seguidor de linha com PID.</p>
+    <p>Componentes utilizados:</p>
+    <ol>
+        <li>Arduino Uno R3:</li>
+        <ul type="square">
+            <li>14 entradas e saídas digitais, no qual 6 pinos podem ser utilizados como saída PWM, 
+              que funciona como se adicionássemos intensidade no sinal. Dessa forma, ela pode ser utilizada, 
+              por exemplo, como volume, para regular a intensidade de brilho e muito mais.</li>
+        </ul>
+        <li>Placa de Ensaio Pequena:</li>
+        <ul type="square">
+            <li>É uma placa com furos e conexões condutoras 
+            ultilizada para a montagem de protótipos e projetos em estado inicial.</li>
+        </ul>
+        <li>Bateria 9V:</li>
+        <ul type="square">
+            <li>As baterias 9V proporcionam energia confiável aos aparelhos do dia a dia.</li>
+            </ul>
+       <li>Motor CC:</li>
+      <ul type="square">
+        
+            <li>São utilizados normalmente em acionamentos de máquinas operatrizes como por exemplo, 
+            ferramentas de avanço.</li>
+          </ul>
+          <li>Fotorresistor:</li>
+      <ul type="square">
+        
+            <li>É um componente eletrônico, sensível a luz, que tem por finalidade limitar a corrente 
+            elétrica que passa sobre ele, como um resistor comum, só que o grande diferencial é 
+            que ele é um resistor variável que interage com a luz.</li>
+          </ul>
+          <li>Acionador Ponte H:</li>
+          <ul type="square">
+            
+            <li>Uma Ponte H é um circuito especial que permite realizar a inversão da 
+                direção (polaridade) da corrente que flui através de uma carga. É muito utilizada, 
+                por exemplo, para controlar a direção de rotação de um motor DC.</li>
+            </ul>
+            <li>Resistores:</li>
+            <ul type="square">
+            
+                <li>A presença de um resistor de maneira isolada em um circuito tem a 
+                    função de limitar a passagem de corrente.</li>
+                </ul>
+                <li>LED RGB:</li>
+                <ul type="square">
+                
+                    <li>emite luz por meio da passagem de corrente elétrica, mas ele apresenta a peculiaridade de ser
+                        composto por três LEDs de cores diferentes, 
+                        sendo elas: vermelho (Red), verde (Green) e azul (Blue), surgindo daí o nome “RGB”.</li>
+                    </ul>
+          </ul>
+          <div>
+            <div style="float: left">
+            <img src="imagens/seguidor_de_linha.png" />
+            </div>
+                <div class="dropdown">
+                <span>Passe o mouse sobre mim <br>
+                para ver o código usado <br>
+                (código sem PID)
+                </span>
+                <div class="dropdown-content">
+                <p>Nele usamos o seguinte código: <br></p>
+                <code>
+                    // Portas driver motor<br>
+                    #define PININ1 2<br>
+                    #define PININ2 4<br>
+                    #define PININ3 5<br>
+                    #define PININ4 7<br>
+                    #define PINENA 3<br>
+                    #define PINENB 6<br>
+                    // Portas led rgb<br>
+                    #define PINLEDR 9<br>
+                    #define PINLEDG 11<br>
+                    #define PINLEDB 10<br>
+                    // Portas sensor QTR<br>
+                    #define S1 A0<br>
+                    #define S2 A1<br>
+                    #define S3 A2<br>
+                    #define S4 A3<br>
+                    #define S5 A4<br>
+                    #define S6 A5<br>
+                    // Valores de ajustes para o seguidor de linha MIF<br>
+                    #define TRESHOLD 700                       // Valor de referencia para cor da linha branca<br>
+                    #define SPEED0 255                          // Valor de 0 a 255 para velocidade com a seguinte <br>leitura do sensor (0 0 1 1 0 0)
+                    #define SPEED1 220                          // Valor de 0 a 255 para velocidade com a seguinte <br>leitura do sensor (0 0 1 1 1 0)
+                    #define SPEED2 150                          // Valor de 0 a 255 para velocidade com a seguinte <br>leitura do sensor (0 0 0 1 0 0)
+                    #define SPEED3 100                          // Valor de 0 a 255 para velocidade com a seguinte <br>leitura do sensor (0 0 0 1 1 0)
+                    #define SPEED4 80                          // Valor de 0 a 255 para velocidade com a seguinte <br>leitura do sensor (0 0 0 1 1 1)
+                    #define SPEED5 50                            // Valor de 0 a 255 para velocidade com a seguinte <br>leitura do sensor (0 0 0 0 1 0)
+                    #define SPEED6 0                            // Valor de 0 a 255 para velocidade com a seguinte <br>leitura do sensor (0 0 0 0 1 1)
+                    #define SPEED7 200                          // Valor de 0 a 255 para velocidade com a seguinte <br>leitura do sensor (0 0 0 0 0 1)
+                    #define RUNTIME 15500                      // Valor para executar o percurso<br>
+                    void setup() {<br>
+                    Serial.begin(9600);<br>
+                    ledControl(13, true, 500);<br>
+                    ledControl(13, false, 500);<br>
+                    ledControl(13, true, 500);<br>
+                    ledControl(13, false, 500);<br>
+                    }<br>
+                    void loop() {<br>
+                    // TESTE 1°: leituta sensor<br>
+                    //readSensors(true, s);<br>
+                    // TESTE 2°: motor esquerda<br>
+                    //motorOption('4',255,255);<br>
+                    // TESTE 3°: motor direita<br>
+                    //motorOption('6', 255, 255);<br>
+                    // TESTE 4°: seguidor de linha<br>
+                    followLineMEF();<br>
+                    // TESTE 5°: teste led RGB<br>
+                    //rgbControl(0,0,255,0);<br>
+                    }<br>
+                    void motorControl(int speedLeft, int speedRight) {<br>
+                    // Função para controle do driver de motor<br>
+                    // Definições das portas digitais<br>
+                    pinMode(PININ1, OUTPUT);<br>
+                    pinMode(PININ2, OUTPUT);<br>
+                    pinMode(PININ3, OUTPUT);<br>
+                    pinMode(PININ4, OUTPUT);<br>
+                    pinMode(PINENA, OUTPUT);<br>
+                    pinMode(PINENB, OUTPUT);<br>
+                    // Ajustes motor da esquerda<br>
+                    if (speedLeft <= 0) {<br>
+                        speedLeft = -speedLeft;<br>
+                        digitalWrite (PININ3, HIGH);<br>
+                        digitalWrite (PININ4, LOW);<br>
+                    } else {<br>
+                        digitalWrite (PININ3, LOW);<br>
+                        digitalWrite (PININ4, HIGH);<br>
+                    }<br>
+                    // Ajustes motor da direita<br>
+                    if (speedRight < 0) {<br>
+                        speedRight = -speedRight;<br>
+                        digitalWrite (PININ1, LOW);<br>
+                        digitalWrite (PININ2, HIGH);<br>
+                    } else {<br>
+                        digitalWrite (PININ1, HIGH);<br>
+                        digitalWrite (PININ2, LOW);<br>
+                    }<br>
+                    analogWrite (PINENA, speedLeft);<br>
+                    analogWrite (PINENB, speedRight);<br>
+                    }<br>
+                    void motorOption(char option, int speedLeft, int speedRight) {<br>
+                    // Função para controle de motor com pre definições<br>
+                    switch (option) {<br>
+                        case '8': // Frente<br>
+                        motorControl(-speedLeft, speedRight);<br>
+                        break;<br>
+                        case '2': // Tras<br>
+                        motorControl(speedLeft, -speedRight);<br>
+                        break;<br>
+                        case '4': // Esqueda<br>
+                        motorControl(-speedLeft, -speedRight);<br>
+                        break;<br>
+                        case '6': // Direita<br>
+                        motorControl(speedLeft, speedRight);<br>
+                        break;<br>
+                        case '0': // Parar<br>
+                        motorControl(0, 0);<br>
+                        break;<br>
+                    }<br>
+                    }<br>
+                    bool motorStop(long runtime, long currentTime) {<br>
+                    // Função de parada do robô<br>
+                    if (millis() >= (runtime + currentTime)) {<br>
+                        motorOption('0', 0, 0);<br>
+                        int cont = 0;<br>
+                        while (true) {<br>
+                        ledControl(13, true, 250);<br>
+                        ledControl(13, false, 250);<br>
+                        cont++;<br>
+                        }<br>
+                        return false;<br>
+                    }<br>
+                    return true;<br>
+                    }<br>
+                    void rgbControl(int red, int green, int blue, long rumtime) {<br>
+                    // Função para controle do led rgb<br>
+                    pinMode(PINLEDR, OUTPUT);<br>
+                    pinMode(PINLEDG, OUTPUT);<br>
+                    pinMode(PINLEDB, OUTPUT);<br>
+                    digitalWrite(PINLEDR, HIGH);<br>
+                    digitalWrite(PINLEDG, HIGH);<br>
+                    digitalWrite(PINLEDB, HIGH);<br>
+                    analogWrite(PINLEDR, red);<br>
+                    analogWrite(PINLEDG, green);<br>
+                    analogWrite(PINLEDB, blue);<br>
+                    delay(rumtime);<br>
+                    }<br>
+                    void ledControl(int led, bool status, long rumtime) {<br>
+                    // Função para controle do led<br>
+                    pinMode(led, OUTPUT);<br>
+                    if (status) {<br>
+                        digitalWrite(led, HIGH);<br>
+                    } else {<br>
+                        digitalWrite(led, LOW);<br>
+                    }<br>
+                    delay(rumtime);<br>
+                    }<br>
+                    void readSensors(bool readSerial, int *sensors) {<br>
+                    // Função para leitura dos sensores<br>
+                    sensors[0] = analogRead(S1);<br>
+                    sensors[1] = analogRead(S2);<br>
+                    sensors[2] = analogRead(S3);<br>
+                    sensors[3] = analogRead(S4);<br>
+                    sensors[4] = analogRead(S5);<br>
+                    sensors[5] = analogRead(S6);<br>
+                    if (readSerial) {<br>
+                        Serial.print(sensors[0]);<br>
+                        Serial.print(' ');<br>
+                        Serial.print(sensors[1]);<br>
+                        Serial.print(' ');<br>
+                        Serial.print(sensors[2]);<br>
+                        Serial.print(' ');<br>
+                        Serial.print(sensors[3]);<br>
+                        Serial.print(' ');<br>
+                        Serial.print(sensors[4]);<br>
+                        Serial.print(' ');<br>
+                        Serial.println(sensors[5]);<br>
+                    }<br>
+                    }<br>
+                    void followLineMEF(void) {<br>
+                    // Função para controle do seguidor de linha em modo de maquina de estado finita<br>
+                    bool flag = true;<br>
+                    long currentTime = millis();<br>
+                    while (flag) {<br>
+                        // Flag para verificar a parada<br>
+                        flag = motorStop(RUNTIME, currentTime);<br>
+                        // Leitura sensores<br>
+                        int s[6];<br>
+                        readSensors(false, s);<br>
+                        // leitura do sensor (1 1 1 1 1 1)<br>
+                        if (s[0] <= TRESHOLD && s[1] <= TRESHOLD && s[2] <= TRESHOLD && s[3] <= TRESHOLD && s[4] <= TRESHOLD && s[5] <= TRESHOLD) {<br>
+                        motorOption('8', SPEED0, SPEED0);<br>
+                        // leitura do sensor (0 1 1 1 1 0)<br>
+                        } else if ( s[0] >= TRESHOLD && s[1] <= TRESHOLD && s[2] <= TRESHOLD && s[3] <= TRESHOLD && s[4] <= TRESHOLD && s[5] >= TRESHOLD) {<br>
+                        motorOption('8', SPEED0, SPEED0);<br>
+                        // leitura do sensor (0 0 1 1 0 0)<br>
+                        } else if ( s[0] >= TRESHOLD && s[1] >= TRESHOLD && s[2] <= TRESHOLD && s[3] <= TRESHOLD && s[4] >= TRESHOLD && s[5] >= TRESHOLD) {<br>
+                        motorOption('8', SPEED0, SPEED0);<br>
+                        // leitura do sensor (0 1 1 1 0 0)<br>
+                        } else if (s[0] >= TRESHOLD && s[1] <= TRESHOLD && s[2] <= TRESHOLD && s[3] <= TRESHOLD && s[4] >= TRESHOLD && s[5] >= TRESHOLD) {<br>
+                        motorOption('8', SPEED0, SPEED1);<br>
+                        // leitura do sensor (0 0 1 1 1 0)<br>
+                        } else if (s[0] >= TRESHOLD && s[1] >= TRESHOLD && s[2] <= TRESHOLD && s[3] <= TRESHOLD && s[4] <= TRESHOLD && s[5] >= TRESHOLD ) {<br>
+                        motorOption('8', SPEED1, SPEED0);<br>
+                        // leitura do sensor (0 0 1 0 0 0)<br>
+                        } else if (s[0] >= TRESHOLD && s[1] >= TRESHOLD && s[2] <= TRESHOLD && s[3] >= TRESHOLD && s[4] >= TRESHOLD && s[5] >= TRESHOLD) {<br>
+                        motorOption('8', SPEED0, SPEED2);<br>
+                        // leitura do sensor (0 0 0 1 0 0)<br>
+                        } else if (s[0] >= TRESHOLD && s[1] >= TRESHOLD && s[2] >= TRESHOLD && s[3] <= TRESHOLD && s[4] >= TRESHOLD && s[5] >= TRESHOLD ) {<br>
+                        motorOption('8', SPEED2, SPEED0);<br>
+                        // leitura do sensor (0 1 1 0 0 0)<br>
+                        } else if (s[0] >= TRESHOLD && s[1] <= TRESHOLD && s[2] <= TRESHOLD && s[3] >= TRESHOLD && s[4] >= TRESHOLD && s[5] >= TRESHOLD) {<br>
+                        motorOption('8', SPEED0, SPEED3);<br>
+                        // leitura do sensor (0 0 0 1 1 0)<br>
+                        } else if (s[0] >= TRESHOLD && s[1] >= TRESHOLD && s[2] >= TRESHOLD && s[3] <= TRESHOLD && s[4] <= TRESHOLD && s[5] >= TRESHOLD) {<br>
+                        motorOption('8', SPEED3, SPEED0);<br>
+                        // leitura do sensor (1 1 1 0 0 0)<br>
+                        } else if (s[0] <= TRESHOLD && s[1] <= TRESHOLD && s[2] <= TRESHOLD && s[3] >= TRESHOLD && s[4] >= TRESHOLD && s[5] >= TRESHOLD) {<br>
+                        motorOption('8', SPEED0, SPEED4);<br>
+                        // leitura do sensor (0 0 0 1 1 1)<br>
+                        } else if (s[0] >= TRESHOLD && s[1] >= TRESHOLD && s[2] >= TRESHOLD && s[3] <= TRESHOLD && s[4] <= TRESHOLD && s[5] <= TRESHOLD) {<br>
+                        motorOption('8', SPEED4, SPEED0);<br>
+                        // leitura do sensor (0 1 0 0 0 0)<br>
+                        } else if (s[0] >= TRESHOLD && s[1] <= TRESHOLD && s[2] >= TRESHOLD && s[3] >= TRESHOLD && s[4] >= TRESHOLD && s[5] >= TRESHOLD) {<br>
+                        motorOption('8', SPEED0, SPEED5);<br>
+                        // leitura do sensor (0 0 0 0 1 0)<br>
+                        } else if (s[0] >= TRESHOLD && s[1] >= TRESHOLD && s[2] >= TRESHOLD && s[3] >= TRESHOLD && s[4] <= TRESHOLD && s[5] >= TRESHOLD) {<br>
+                        motorOption('8', SPEED5, SPEED0);<br>
+                        // leitura do sensor (1 1 0 0 0 0)<br>
+                        } else if (s[0] <= TRESHOLD && s[1] <= TRESHOLD && s[2] >= TRESHOLD && s[3] >= TRESHOLD && s[4] >= TRESHOLD && s[5] >= TRESHOLD) {<br>
+                        motorOption('8', SPEED0, SPEED6);<br>
+                        // leitura do sensor (0 0 0 0 1 0)<br>
+                        } else if (s[0] >= TRESHOLD && s[1] >= TRESHOLD && s[2] >= TRESHOLD && s[3] >= TRESHOLD && s[4] <= TRESHOLD && s[5] <= TRESHOLD) {<br>
+                        motorOption('8', SPEED6, SPEED0);<br>
+                        // leitura do sensor (1 0 0 0 0 0)<br>
+                        } else if (s[0] <= TRESHOLD && s[1] >= TRESHOLD && s[2] >= TRESHOLD && s[3] >= TRESHOLD && s[4] >= TRESHOLD && s[5] >= TRESHOLD) {<br>
+                        motorOption('6', SPEED7, SPEED7);<br>
+                        // leitura do sensor (0 0 0 0 0 1)<br>
+                        } else if (s[0] >= TRESHOLD && s[1] >= TRESHOLD && s[2] >= TRESHOLD && s[3] >= TRESHOLD && s[4] >= TRESHOLD && s[5] <= TRESHOLD) {<br>
+                        motorOption('4', SPEED7, SPEED7);<br>
+                        }<br>
+                    }<br>
+                    }<br>
+                </code>
+                </div>
+                </div>
+              <code>
+                
+              </code>
+            <div>
+            <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> 
+          <p>Se quiser ter todo acesso as informações do projeto é só clicar <a href="https://www.tinkercad.com/things/33f8xpWVGSl" target="_blank">aqui</a>.</p>
+          <h5>
+            <a href="index.html">
+                <img  class="direita" src="imagens/votlar preto.png" width="60px">
+            </a>
+        </h5>
+</body>
+</html>

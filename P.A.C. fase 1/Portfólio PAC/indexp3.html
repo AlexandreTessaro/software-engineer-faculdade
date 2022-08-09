@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projeto 03</title>
+    <link rel="stylesheet" href="stylep3.css">
+</head>
+<body>
+    <h2>Projeto 03</h2>
+    <p>No terceiro projeto foi lançado um desafio para criar uma luz de emergência no tinkercad.</p>
+    <p>Componentes utilizados:</p>
+    <ol>
+      <li>Arduino Uno R3:</li>
+      <ul type="square">
+          <li>14 entradas e saídas digitais, no qual 6 pinos podem ser utilizados como saída PWM, 
+            que funciona como se adicionássemos intensidade no sinal. Dessa forma, ela pode ser utilizada, 
+            por exemplo, como volume, para regular a intensidade de brilho e muito mais.</li>
+      </ul>
+      <li>Placa de Ensaio Pequena:</li>
+      <ul type="square">
+          <li>É uma placa com furos e conexões condutoras 
+          ultilizada para a montagem de protótipos e projetos em estado inicial.</li>
+      </ul>
+      <li>Resistores:</li>
+      <ul type="square">
+          <li>A presença de um resistor de maneira isolada em um 
+          circuito tem a função de limitar a passagem de corrente.</li>
+          </ul>
+     <li>LEDs:</li>
+    <ul type="square">
+      
+          <li>Possuem a capacidade de transformar energia em luz.</li>
+        </ul>
+        <li>Fotorresistor:</li>
+    <ul type="square">
+      
+          <li>É um componente eletrônico, sensível a luz, que tem por finalidade limitar a corrente 
+            elétrica que passa sobre ele, como um resistor comum, só que o grande diferencial é 
+            que ele é um resistor variável que interage com a luz.</li>
+        </ul>
+        
+        </ul>
+    <div>
+        <div style="float: left">
+        <img src="imagens/luz_emergencia.jpg" />
+        </div>
+            <div class="dropdown">
+            <span>Passe o mouse sobre mim para ver o código usado</span>
+            <div class="dropdown-content">
+            <p>Nele usamos o seguinte código: <br>
+                // C++ code <br>
+                // <br>
+                <br>
+                int energia;<br>
+                <br>
+                void setup()<br>
+                {<br>
+                  pinMode(A2, INPUT);<br>
+                  pinMode(7, OUTPUT);<br>
+                  Serial.begin(9000);<br>
+                }<br>
+                <br>
+                void loop()<br>
+                {<br>
+                  energia = analogRead(A2);<br>
+                  Serial.println(energia);<br>
+                  <br>
+                  if(energia<50){<br>
+                    digitalWrite(7,HIGH);<br>
+                  }else{<br>
+                    digitalWrite(7,LOW);<br>
+                  }<br>
+                }<br>
+              </code>
+            </div>
+            <br>
+            <br></p>
+            </div>
+            </div>
+          <code>
+            
+          </code>
+        <div>
+        <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>   
+        <p>Se quiser ter todo acesso as informações do projeto é só clicar <a href="https://www.tinkercad.com/things/d3hb58qQ4aA" target="_blank">aqui</a>.</p>
+        <h5>
+        <a href="index.html">
+            <img  class="direita" src="imagens/votlar preto.png" width="60px">
+        </a>
+    </h5>
+</body>
+</html>
